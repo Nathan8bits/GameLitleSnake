@@ -41,7 +41,7 @@ td{
 }
 
 section {
-    background-color: aqua;
+    background-color:#AACC66;
     width: 400px;
     margin: 50px;
     border: 2px solid black;
@@ -51,19 +51,11 @@ section {
     background-color: blue;
 }
 
-.run {
-    background-color: red;
-}
-
-.fishing{
-    background-color: yellow;
-}
-
 .vida{
-    background-color: red;
+    background-color: #2d8213;
     border-radius: 5px;
 }
 .blue{
-    background-color: blue;
+    background-color: #f81e1e;
     border-radius: 5px;
 }
