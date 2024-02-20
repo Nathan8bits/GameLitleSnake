@@ -1,6 +1,6 @@
-let tamY = 30;//colunas
-let tamX = 15; //linhas, colunas  10, 6 
-let matriz = new Array(tamX);//colunas
+let tamY = 6;//colunas
+let tamX = 6; //linhas, colunas  10, 6 
+//let matriz = new Array(tamX);//colunas
 
 //variavel de controle
 let run = true;
@@ -16,11 +16,11 @@ for (let index = 0; index < tamCobra; index++) {
     cobra[index] = new Array(2);
 }
 
-cobra[0][0] = 15;//y
-cobra[0][1] = 2;//x
-cobra[1][0] = 15;
-cobra[1][1] = 1;
-cobra[2][0] = 15;
+cobra[0][0] = parseInt(tamY/2);//y
+cobra[0][1] = 1;//x
+cobra[1][0] = parseInt(tamY/2);
+cobra[1][1] = 0;
+cobra[2][0] = parseInt(tamY/2) ;
 cobra[2][1] = 0;
 console.log(cobra);
 
@@ -43,6 +43,7 @@ let celulaTd = document.querySelectorAll(".celulaTd");
 
 
 //main
+/*
 //iniciando o mapa
 for(let i = 0; i < tamX; i++) {
     matriz[i] = new Array(tamY)
@@ -50,136 +51,197 @@ for(let i = 0; i < tamX; i++) {
     for(let j=0; j<tamY; j++) {
         matriz[i][j] = ' ';//preenchendo o mapa
     }
-}
+}*/
+
 
 //console.log(matriz)
-console.log(cobra);
+//console.log(cobra);
 console.log(ultimaTecla);
 
 posicionarCobra();
+gerarComida();
 posicionarComida();
 proxFrame();
 
 
-
-const btnW = document.querySelector(".btnW");
-btnW.addEventListener("click", () => {
+function movCima() {
     if(ultimaTecla === 'a' || ultimaTecla === 'd') {
         ultimaTecla = 'w';
         proxFrame() 
         console.log(ultimaTecla);
     }
-});
+}
 
-const btnS = document.querySelector(".btnS");
-btnS.addEventListener("click", () => {
+function movBaixo() {
     if(ultimaTecla == 'a' || ultimaTecla == 'd') {
         ultimaTecla = 's';
         proxFrame() 
         console.log(ultimaTecla);
     }
-});
+}
 
-
-const btnA = document.querySelector(".btnA");
-btnA.addEventListener("click", () => {
+function movEsquerda() {
     if(ultimaTecla === 'w' || ultimaTecla === 's') {
         ultimaTecla = 'a';
         proxFrame() 
         console.log(ultimaTecla);
     }
-});
+}
 
-const btnD = document.querySelector(".btnD");
-btnD.addEventListener("click", () => {
+function movDireita() {
     if(ultimaTecla === 'w' || ultimaTecla === 's') {
         ultimaTecla = 'd';
         proxFrame() 
         console.log(ultimaTecla);
     }
-});
+}
+
+const btnW = document.querySelector(".btnW");
+btnW.addEventListener("click", movCima);
+
+const btnS = document.querySelector(".btnS");
+btnS.addEventListener("click", movBaixo);
+
+const btnA = document.querySelector(".btnA");
+btnA.addEventListener("click", movEsquerda);
+
+const btnD = document.querySelector(".btnD");
+btnD.addEventListener("click", movDireita);
+
+document.addEventListener('keypress', function(event) {
+    if (event.key === 'w') {
+      // Ações a serem executadas quando o Enter for pressionado
+        movCima();
+        console.log("cima");
+    }
+  });
+
+document.addEventListener('keypress', function(event) {
+    if (event.key === 'a') {
+      // Ações a serem executadas quando o Enter for pressionado
+         movEsquerda();
+        console.log("esquerda");
+    }
+  });
+
+document.addEventListener('keypress', function(event) {
+    if (event.key === 'd') {
+      // Ações a serem executadas quando o Enter for pressionado
+        movDireita();
+        console.log("direita");
+    }
+  });
+
+document.addEventListener('keypress', function(event) {
+    if (event.key === 's') {
+      // Ações a serem executadas quando o Enter for pressionado
+      movBaixo();  
+      console.log("baixo");
+    }
+  });
 
 
-
-
-
-setInterval(function(){
+setInterval(() => {
+    //console.log(`run: ${run}`)
     if(run) {
+        console.log(`run: ${run}`);
         proxFrame();
-        //console.log("frame");
+        console.log("frame");
     }
 }, 1000);
 
+
 function proxFrame() 
-{       
-    celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida");
-    
-    for(let i = tamCobra - 1; i > 0; i--) {
-        cobra[i][0] = cobra[i-1][0];
-        cobra[i][1] = cobra[i-1][1];
-        console.log(i)
+{    
+    if(run) {
+        console.log("proxFrame")
+                console.log(`tamX: ${tamX}, tamY: ${tamY}. tamCobra: ${tamCobra}, cabeça: ${cobra[0][0]}, ${cobra[0][1]} ultima parte: ${cobra[tamCobra-1][0]}, ${cobra[tamCobra-1][1]}`);
+        //console.log(`run: ${run}`);
+
+        celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida");
+        
+        for(let i = tamCobra - 1; i > 0; i--) {
+            cobra[i][0] = cobra[i-1][0];
+            cobra[i][1] = cobra[i-1][1];
+        }
+        
+        direcao();
+        posicionarCobra();
+        colidiuComida();
+        //posicionarComida();
+
+        if( cobra[0][1] > tamX -1 
+            || cobra[0][1] < 0 
+            || cobra[0][0] > tamY - 1
+            || cobra[0][0] < 0
+            ) {
+
+                run = false;
+                console.log("PAREDE");
+                console.log(`run: ${run}`);
+        }
+        
+          
+        //celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida")
+        //celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].setAttribute("class", "blue")
+        
+        console.log(`tamX: ${tamX}, tamY: ${tamY}. tamCobra: ${tamCobra}, cabeça: ${cobra[0][0]}, ${cobra[0][1]} ultima parte: ${cobra[tamCobra-1][0]}, ${cobra[tamCobra-1][1]}`);
     }
 
-    direcao();
-    colidiuComida();
-    
 
-    if( cobra[0][1] >= tamX - 1
-        || cobra[0][1] < 0 
-        || cobra[0][0] >= tamY - 1 
-        || cobra[0][0] < 0) {
-            run = false;
-    }
-
-    
-    posicionarCobra();
-    
-   //celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida")
-   //celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].setAttribute("class", "blue")
-    console.log("proxFrame")
-    console.log(`tamCobra: ${tamCobra}, ultima parte: ${cobra[tamCobra-1][0]}, ${cobra[tamCobra-1][1]}`);
 }
 
-
-function posicionarCobra() {
-    //posicionando cobra
-    for (let index = 0; index < tamCobra; index++) {
-        celulaTd[cobra[index][1]*tamY + cobra[index][0]].setAttribute("class", "vida");
-    }
-}
-function posicionarComida() {
-    //posicionando cobra
-    for (let index = 0; index < tamCobra; index++) {
-        //celulaTd[x*tamY + y].setAttribute("class", "vida");
-        celulaTd[comida[1]*tamY + comida[0]].setAttribute("class", "blue");
-    }
-}
 
 function colidiuComida() {
 
     if(comida[0] == cobra[0][0] && comida[1] == cobra[0][1]) {
-        
-        
         //adicionando nova parte
-        console.log("comeu")
+        console.log("comeu");
+        celulaTd[comida[1]*tamY + comida[0]].classList.remove("blue")
+        
+        cobra[0][0] = comida[0];
+        cobra[0][1] = comida[1];
+        gerarComida();
 
         let newParte = [2];
         cobra.push(newParte);
-        console.log(cobra);
 
         tamCobra++;
 
+        //movendo o corpo
         for(let i = tamCobra - 1; i > 0; i++) {
            cobra[i][0] = cobra[i-1][0];
            cobra[i][1] = cobra[i-1][1];
         }
-       
-    
-       
+        
     }
-
     //return colizao;
 }
+
+function gerarComida() {
+    let pontoValido = false;
+    let x;
+    let y;
+
+    while(!pontoValido) {
+        x = Math.floor(Math.random() *(tamY-1));
+        y = Math.floor(Math.random() * (tamX - 1));
+
+        console.log(`x: ${x}, y: ${y}`);
+        
+        cobra.map((parte) => {
+            if(parte[0] != x && parte[1] != y) {
+                pontoValido = true;
+            }
+        })
+    }
+
+    comida[0] = x;
+    comida[1] = y;
+    posicionarComida()
+
+}
+
 
 //Math.floor((Math.random() * (max - min)) + min)
 

@@ -21,3 +21,17 @@ function criarTabuleiro() {
 
     game.appendChild(matrizMapa);
 }
+
+function posicionarCobra() {
+    //posicionando cobra
+    for (let index = 0; index < tamCobra; index++) {
+        celulaTd[cobra[index][1]*tamY + cobra[index][0]].setAttribute("class", "vida");
+    }
+}
+function posicionarComida() {
+    //posicionando cobra
+    for (let index = 0; index < tamCobra; index++) {
+        //celulaTd[x*tamY + y].setAttribute("class", "vida");
+        celulaTd[comida[1]*tamY + comida[0]].setAttribute("class", "blue");
+    }
+}
