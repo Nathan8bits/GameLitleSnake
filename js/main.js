@@ -1,5 +1,5 @@
-let tamY = 6;//colunas
-let tamX = 6; //linhas, colunas  10, 6 
+let tamY = 20;//colunas
+let tamX = 14; //linhas, colunas  10, 6 
 //let matriz = new Array(tamX);//colunas
 
 //variavel de controle
@@ -16,24 +16,6 @@ for (let index = 0; index < tamCobra; index++) {
     cobra[index] = new Array(2);
 }
 
-cobra[0][0] = parseInt(tamY/2);//y
-cobra[0][1] = 1;//x
-cobra[1][0] = parseInt(tamY/2);
-cobra[1][1] = 0;
-cobra[2][0] = parseInt(tamY/2) ;
-cobra[2][1] = 0;
-console.log(cobra);
-
-//adicionando nova parte
-/*
-let newParte = [2]
-newParte[0] = 1;
-newParte[1] = 2;
-
-cobra.push(newParte)
-*/
-
-
 //variavies do html
 const game = document.querySelector(".game");
 criarTabuleiro();
@@ -41,156 +23,98 @@ let celulaTd = document.querySelectorAll(".celulaTd");
 //celulaTd[x*tamY + y].setAttribute("class", "vida");
 //celulaTd[x*tamY + y].classList.remove("vida");
 
-
 //main
-/*
-//iniciando o mapa
-for(let i = 0; i < tamX; i++) {
-    matriz[i] = new Array(tamY)
+(() => {
+    cobra[0][0] = parseInt(tamY/2);//y
+    cobra[0][1] = 2;//x
+    cobra[1][0] = parseInt(tamY/2);
+    cobra[1][1] = 1;
+    cobra[2][0] = parseInt(tamY/2) ;
+    cobra[2][1] = 0;
+    console.log(cobra);
+
+    console.log(ultimaTecla);
+    posicionarCobra();
+    gerarComida();
+    posicionarComida();
     
-    for(let j=0; j<tamY; j++) {
-        matriz[i][j] = ' ';//preenchendo o mapa
-    }
-}*/
-
-
-//console.log(matriz)
-//console.log(cobra);
-console.log(ultimaTecla);
-
-posicionarCobra();
-gerarComida();
-posicionarComida();
-proxFrame();
-
-
-function movCima() {
-    if(ultimaTecla === 'a' || ultimaTecla === 'd') {
-        ultimaTecla = 'w';
-        proxFrame() 
-        console.log(ultimaTecla);
-    }
-}
-
-function movBaixo() {
-    if(ultimaTecla == 'a' || ultimaTecla == 'd') {
-        ultimaTecla = 's';
-        proxFrame() 
-        console.log(ultimaTecla);
-    }
-}
-
-function movEsquerda() {
-    if(ultimaTecla === 'w' || ultimaTecla === 's') {
-        ultimaTecla = 'a';
-        proxFrame() 
-        console.log(ultimaTecla);
-    }
-}
-
-function movDireita() {
-    if(ultimaTecla === 'w' || ultimaTecla === 's') {
-        ultimaTecla = 'd';
-        proxFrame() 
-        console.log(ultimaTecla);
-    }
-}
-
-const btnW = document.querySelector(".btnW");
-btnW.addEventListener("click", movCima);
-
-const btnS = document.querySelector(".btnS");
-btnS.addEventListener("click", movBaixo);
-
-const btnA = document.querySelector(".btnA");
-btnA.addEventListener("click", movEsquerda);
-
-const btnD = document.querySelector(".btnD");
-btnD.addEventListener("click", movDireita);
-
-document.addEventListener('keypress', function(event) {
-    if (event.key === 'w') {
-      // Ações a serem executadas quando o Enter for pressionado
-        movCima();
-        console.log("cima");
-    }
-  });
-
-document.addEventListener('keypress', function(event) {
-    if (event.key === 'a') {
-      // Ações a serem executadas quando o Enter for pressionado
-         movEsquerda();
-        console.log("esquerda");
-    }
-  });
-
-document.addEventListener('keypress', function(event) {
-    if (event.key === 'd') {
-      // Ações a serem executadas quando o Enter for pressionado
-        movDireita();
-        console.log("direita");
-    }
-  });
-
-document.addEventListener('keypress', function(event) {
-    if (event.key === 's') {
-      // Ações a serem executadas quando o Enter for pressionado
-      movBaixo();  
-      console.log("baixo");
-    }
-  });
-
+})()
 
 setInterval(() => {
     //console.log(`run: ${run}`)
     if(run) {
         console.log(`run: ${run}`);
         proxFrame();
-        console.log("frame");
-    }
-}, 1000);
+        //console.log("frame");
+    } 
+}, 200);
 
 
 function proxFrame() 
 {    
     if(run) {
-        console.log("proxFrame")
-                console.log(`tamX: ${tamX}, tamY: ${tamY}. tamCobra: ${tamCobra}, cabeça: ${cobra[0][0]}, ${cobra[0][1]} ultima parte: ${cobra[tamCobra-1][0]}, ${cobra[tamCobra-1][1]}`);
+        console.log("proxFrame")/
+        console.log(`tamX: ${tamX}, tamY: ${tamY}. tamCobra: ${tamCobra}, cabeça: ${cobra[0][0]}, ${cobra[0][1]} ultima parte: ${cobra[tamCobra-1][0]}, ${cobra[tamCobra-1][1]}`);
         //console.log(`run: ${run}`);
 
-        celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida");
-        
-        for(let i = tamCobra - 1; i > 0; i--) {
-            cobra[i][0] = cobra[i-1][0];
-            cobra[i][1] = cobra[i-1][1];
-        }
-        
         direcao();
-        posicionarCobra();
-        colidiuComida();
-        //posicionarComida();
-
-        if( cobra[0][1] > tamX -1 
-            || cobra[0][1] < 0 
-            || cobra[0][0] > tamY - 1
-            || cobra[0][0] < 0
-            ) {
-
-                run = false;
-                console.log("PAREDE");
-                console.log(`run: ${run}`);
-        }
         
-          
-        //celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida")
+        //console.log(cobra[0][1])
+        
+        
+        if( cobra[0][0] >= 0 
+            && cobra[0][0] < tamY
+            && cobra[0][1] >= 0
+            && cobra[0][1] < tamX
+            && !verificarColisaoSelf(cobra[0])
+            ) {
+                
+                celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida");
+                for(let i = tamCobra - 1; i > 0; i--) {
+                    cobra[i][0] = cobra[i-1][0];
+                    cobra[i][1] = cobra[i-1][1];
+                }
+                posicionarCobra();
+                
+            } else {
+                run = false;
+                console.log("PAREDE")
+            }
+            
+            colidiuComida();
+            
+            
+            //celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida")
         //celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].setAttribute("class", "blue")
         
-        console.log(`tamX: ${tamX}, tamY: ${tamY}. tamCobra: ${tamCobra}, cabeça: ${cobra[0][0]}, ${cobra[0][1]} ultima parte: ${cobra[tamCobra-1][0]}, ${cobra[tamCobra-1][1]}`);
+        //console.log(`tamX: ${tamX}, tamY: ${tamY}. tamCobra: ${tamCobra}, cabeça: ${cobra[0][0]}, ${cobra[0][1]} ultima parte: ${cobra[tamCobra-1][0]}, ${cobra[tamCobra-1][1]}`);
     }
-
-
 }
 
+function verificarColisaoSelf(ponto) {
+    let colidiu = false;
+
+    for (let index = 1; index < tamCobra; index++) {
+        if(ponto[0] == cobra[index][0] && ponto[1] == cobra[index][1]) {
+            colidiu = true
+        }
+    }
+
+    return colidiu;
+}
+
+function verifcarColisaoComida(ponto) {
+    let colidiu = false;
+
+    cobra.map((parte) => {
+        if( parte[0] == ponto[0] 
+            && parte[1] == ponto[1]) {
+            colidiu = true;
+        }
+    })
+
+    return colidiu;
+}
 
 function colidiuComida() {
 
@@ -198,10 +122,17 @@ function colidiuComida() {
         //adicionando nova parte
         console.log("comeu");
         celulaTd[comida[1]*tamY + comida[0]].classList.remove("blue")
-        
+        //celulaTd[comida[1]*tamY + comida[0]].classList.add("vida")
+
         cobra[0][0] = comida[0];
         cobra[0][1] = comida[1];
-        gerarComida();
+
+        if(tamCobra <= tamX*tamY) {
+            gerarComida();
+        }
+        else if (tamCobra == tamX*tamY) {
+            console.log("vc venceu")
+        }
 
         let newParte = [2];
         cobra.push(newParte);
@@ -213,38 +144,25 @@ function colidiuComida() {
            cobra[i][0] = cobra[i-1][0];
            cobra[i][1] = cobra[i-1][1];
         }
-        
     }
-    //return colizao;
 }
 
 function gerarComida() {
-    let pontoValido = false;
-    let x;
-    let y;
+    let ponto = new Array(2);
+    ponto[0] = Math.floor(Math.random() *(tamY-1));
+    ponto[1] = Math.floor(Math.random() * (tamX - 1));
 
-    while(!pontoValido) {
-        x = Math.floor(Math.random() *(tamY-1));
-        y = Math.floor(Math.random() * (tamX - 1));
+    console.log(`x: ${ponto[0]}, y: ${ponto[1]}`);
+    while(verifcarColisaoComida(ponto)) {
+        ponto[0] = Math.floor(Math.random() *(tamY-1));
+        ponto[1] = Math.floor(Math.random() * (tamX - 1));
+    }   
+     
 
-        console.log(`x: ${x}, y: ${y}`);
-        
-        cobra.map((parte) => {
-            if(parte[0] != x && parte[1] != y) {
-                pontoValido = true;
-            }
-        })
-    }
-
-    comida[0] = x;
-    comida[1] = y;
+    comida[0] = ponto[0];
+    comida[1] = ponto[1];
     posicionarComida()
-
 }
-
-
-//Math.floor((Math.random() * (max - min)) + min)
-
 
 function direcao() {
     switch (ultimaTecla) 

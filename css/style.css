@@ -4,10 +4,6 @@
     font-family: 'roboto', sans-serif;
 }
 
-table {
-    font-size: x-large;
-    
-}
 
 button {
     padding: 5px;
@@ -16,18 +12,39 @@ button {
     border-radius: 10px;
 }
 
-.btnAS {
+.centralizar {
     display: flex;
-    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
+
+.btnA {
+    margin-right: 20px;
+}
+
+.btnD {
+    margin-left: 20px;
+}
+
+.controle {
+    padding: 30px;
+}
+
 
 table{
     border-collapse: collapse;
+    border: 2px solid black;
 }
 
 td{
-    border: 0.1px solid black;
     padding: 10px;
+}
+
+section {
+    background-color: aqua;
+    width: 400px;
+    margin: 50px;
+    border: 2px solid black;
 }
 
 .pause {
@@ -44,7 +61,9 @@ td{
 
 .vida{
     background-color: red;
+    border-radius: 5px;
 }
 .blue{
     background-color: blue;
+    border-radius: 5px;
 }
