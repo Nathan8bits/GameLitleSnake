@@ -4,10 +4,15 @@
     font-family: 'roboto', sans-serif;
 }
 
+h1{
+    margin-top: 10%;
+    margin-left: 10%;
+}
 
 button {
     padding: 5px;
     margin: 5px;
+    width: 50px;
     font-size: 25px;
     border-radius: 10px;
 }
@@ -19,15 +24,16 @@ button {
 }
 
 .btnA {
-    margin-right: 20px;
+    margin-right: 25px;
 }
 
 .btnD {
-    margin-left: 20px;
+    margin-left: 25px;
 }
 
 .controle {
     padding: 30px;
+    margin-top: 10vh;
 }
 
 
@@ -38,12 +44,13 @@ table{
 
 td{
     padding: 10px;
+    
 }
 
 section {
     background-color:#AACC66;
     width: 400px;
-    margin: 50px;
+    margin-top: 10vh;
     border: 2px solid black;
 }
 

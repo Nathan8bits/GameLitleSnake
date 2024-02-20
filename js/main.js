@@ -5,7 +5,13 @@ let tamX = 14; //linhas, colunas  10, 6
 //variavel de controle
 let run = true;
 
-let tamCobra = 3;
+let tamCobra = 4;
+const pontuacao = document.querySelector(".pontuacao");
+function exibirPontuacao(tam) {
+    pontuacao.innerHTML = `Pontuação: ${tam*5}`
+}
+
+
 let ultimaTecla = 's'; //baixo 's', cima 'w', esquerda 'a
 let comida = [2];
 comida[0] = 15;
@@ -28,15 +34,19 @@ let celulaTd = document.querySelectorAll(".celulaTd");
     cobra[0][0] = parseInt(tamY/2);//y
     cobra[0][1] = 2;//x
     cobra[1][0] = parseInt(tamY/2);
-    cobra[1][1] = 1;
+    cobra[1][1] = 2;
     cobra[2][0] = parseInt(tamY/2) ;
-    cobra[2][1] = 0;
+    cobra[2][1] = 1;
+    cobra[3][0] = parseInt(tamY/2) ;
+    cobra[3][1] = 0;
     console.log(cobra);
 
     console.log(ultimaTecla);
+    
     posicionarCobra();
     gerarComida();
     posicionarComida();
+    exibirPontuacao(0);
     
 })()
 
@@ -47,7 +57,7 @@ setInterval(() => {
         proxFrame();
         //console.log("frame");
     } 
-}, 200);
+}, 230);
 
 
 function proxFrame() 
@@ -57,10 +67,7 @@ function proxFrame()
         console.log(`tamX: ${tamX}, tamY: ${tamY}. tamCobra: ${tamCobra}, cabeça: ${cobra[0][0]}, ${cobra[0][1]} ultima parte: ${cobra[tamCobra-1][0]}, ${cobra[tamCobra-1][1]}`);
         //console.log(`run: ${run}`);
 
-        direcao();
-        
-        //console.log(cobra[0][1])
-        
+        direcao();        
         
         if( cobra[0][0] >= 0 
             && cobra[0][0] < tamY
@@ -68,8 +75,8 @@ function proxFrame()
             && cobra[0][1] < tamX
             && !verificarColisaoSelf(cobra[0])
             ) {
-                
                 celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida");
+                
                 for(let i = tamCobra - 1; i > 0; i--) {
                     cobra[i][0] = cobra[i-1][0];
                     cobra[i][1] = cobra[i-1][1];
@@ -81,7 +88,13 @@ function proxFrame()
                 console.log("PAREDE")
             }
             
-            colidiuComida();
+            if(tamCobra < tamX*tamY) {
+                colidiuComida();
+            }
+            else if (tamCobra == tamX*tamY) {
+                console.log("vc venceu")
+                run = false;
+            }
             
             
             //celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida")
@@ -127,12 +140,9 @@ function colidiuComida() {
         cobra[0][0] = comida[0];
         cobra[0][1] = comida[1];
 
-        if(tamCobra <= tamX*tamY) {
-            gerarComida();
-        }
-        else if (tamCobra == tamX*tamY) {
-            console.log("vc venceu")
-        }
+        gerarComida();
+
+        exibirPontuacao(tamCobra-3);
 
         let newParte = [2];
         cobra.push(newParte);
