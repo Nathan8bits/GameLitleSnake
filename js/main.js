@@ -6,16 +6,11 @@ let tamX = 14; //linhas, colunas  10, 6
 let run = true;
 
 let tamCobra = 4;
-const pontuacao = document.querySelector(".pontuacao");
-function exibirPontuacao(tam) {
-    pontuacao.innerHTML = `Pontuação: ${tam*5}`
-}
 
 
 let ultimaTecla = 's'; //baixo 's', cima 'w', esquerda 'a
+
 let comida = [2];
-comida[0] = 15;
-comida[1] = 5;
 
 let cobra = new Array(tamCobra);
 for (let index = 0; index < tamCobra; index++) {
@@ -31,8 +26,8 @@ let celulaTd = document.querySelectorAll(".celulaTd");
 
 //main
 (() => {
-    cobra[0][0] = parseInt(tamY/2);//y
-    cobra[0][1] = 2;//x
+    cobra[0][0] = parseInt(tamY/2);//x
+    cobra[0][1] = 2;//y
     cobra[1][0] = parseInt(tamY/2);
     cobra[1][1] = 2;
     cobra[2][0] = parseInt(tamY/2) ;
@@ -40,7 +35,6 @@ let celulaTd = document.querySelectorAll(".celulaTd");
     cobra[3][0] = parseInt(tamY/2) ;
     cobra[3][1] = 0;
     console.log(cobra);
-
     console.log(ultimaTecla);
     
     posicionarCobra();
@@ -48,7 +42,40 @@ let celulaTd = document.querySelectorAll(".celulaTd");
     posicionarComida();
     exibirPontuacao(0);
     
+    //iniciarVariaveis();
 })()
+
+function iniciarVariaveis(){
+    ultimaTecla = 's';
+    run = true;
+    celulaTd[comida[1]*tamY + comida[0]].classList.remove("blue");
+    
+    tamCobra = 4;
+    
+    /*
+    for(let i = 0; i < tamCobra; i++) {
+        cobra[i][0] = 0;
+        cobra[i][1] = 0;
+    }*/
+    
+    cobra[0][0] = parseInt(tamY/2);//x
+    cobra[0][1] = 2;//y
+    cobra[1][0] = parseInt(tamY/2);
+    cobra[1][1] = 2;
+    cobra[2][0] = parseInt(tamY/2) ;
+    cobra[2][1] = 1;
+    cobra[3][0] = parseInt(tamY/2) ;
+    cobra[3][1] = 0;
+
+
+    console.log(cobra);
+    console.log(ultimaTecla);
+    
+    posicionarCobra();
+    gerarComida();
+    posicionarComida();
+    exibirPontuacao(0);
+}
 
 setInterval(() => {
     //console.log(`run: ${run}`)
@@ -56,9 +83,10 @@ setInterval(() => {
         console.log(`run: ${run}`);
         proxFrame();
         //console.log("frame");
-    } 
-}, 230);
-
+    } else {
+        pontuacao.innerHTML = `Pontuação: ${(tamCobra-4)*5}. Clique na tecla W para reiniciar`;
+    }
+}, 160);
 
 function proxFrame() 
 {    
@@ -68,39 +96,23 @@ function proxFrame()
         //console.log(`run: ${run}`);
 
         direcao();        
+        celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida");
+        for(let i = tamCobra - 1; i > 0; i--) {
+            cobra[i][0] = cobra[i-1][0];
+            cobra[i][1] = cobra[i-1][1];
+        }
+        posicionarCobra();
         
-        if( cobra[0][0] >= 0 
-            && cobra[0][0] < tamY
-            && cobra[0][1] >= 0
-            && cobra[0][1] < tamX
-            && !verificarColisaoSelf(cobra[0])
-            ) {
-                celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida");
-                
-                for(let i = tamCobra - 1; i > 0; i--) {
-                    cobra[i][0] = cobra[i-1][0];
-                    cobra[i][1] = cobra[i-1][1];
-                }
-                posicionarCobra();
-                
-            } else {
-                run = false;
-                console.log("PAREDE")
-            }
+        if(tamCobra < tamX*tamY) {
+            colidiuComida();
+        }
+        else if (tamCobra == tamX*tamY -1) {
+            console.log("vc venceu")
+            run = false;
+        }  
             
-            if(tamCobra < tamX*tamY) {
-                colidiuComida();
-            }
-            else if (tamCobra == tamX*tamY) {
-                console.log("vc venceu")
-                run = false;
-            }
-            
-            
-            //celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida")
+        //celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].classList.remove("vida")
         //celulaTd[cobra[tamCobra-1][1]*tamY + cobra[tamCobra-1][0]].setAttribute("class", "blue")
-        
-        //console.log(`tamX: ${tamX}, tamY: ${tamY}. tamCobra: ${tamCobra}, cabeça: ${cobra[0][0]}, ${cobra[0][1]} ultima parte: ${cobra[tamCobra-1][0]}, ${cobra[tamCobra-1][1]}`);
     }
 }
 
@@ -168,7 +180,6 @@ function gerarComida() {
         ponto[1] = Math.floor(Math.random() * (tamX - 1));
     }   
      
-
     comida[0] = ponto[0];
     comida[1] = ponto[1];
     posicionarComida()
@@ -194,4 +205,14 @@ function direcao() {
             default:
                 break;
         }
+
+        if( cobra[0][0] == -1 
+            || cobra[0][0] == tamY
+            || cobra[0][1] == -1
+            || cobra[0][1] == tamX
+            || verificarColisaoSelf(cobra[0])
+            ) {
+                run = false;
+                console.log(`run: ${run}`);
+            }
 }

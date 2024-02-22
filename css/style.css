@@ -3,6 +3,9 @@
     padding: 0;
     font-family: 'roboto', sans-serif;
 }
+body {
+    background-color: #AACC66;
+}
 
 h1{
     margin-top: 10%;
@@ -10,11 +13,23 @@ h1{
 }
 
 button {
-    padding: 5px;
-    margin: 5px;
-    width: 50px;
-    font-size: 25px;
+    padding: 10px;
+    margin: 10px;
+    width: 90px;
+    height: 80px;
+    font-size: 30px;
     border-radius: 10px;
+    background-color: #AACC66;
+}
+
+button:active{
+    transform: scale(0.8);
+    background-color: #7ea673;
+}
+
+button:hover{
+    transform: scale(0.8);
+    background-color: #7ea673;
 }
 
 .centralizar {
@@ -24,16 +39,16 @@ button {
 }
 
 .btnA {
-    margin-right: 25px;
+    margin-right: 45px;
 }
 
 .btnD {
-    margin-left: 25px;
+    margin-left: 45px;
 }
 
 .controle {
     padding: 30px;
-    margin-top: 10vh;
+    margin-top: 5vh;
 }
 
 
@@ -59,7 +74,7 @@ section {
 }
 
 .vida{
-    background-color: #2d8213;
+    background-color: #1c3515;
     border-radius: 5px;
 }
 .blue{

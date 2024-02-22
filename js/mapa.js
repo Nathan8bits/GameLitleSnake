@@ -1,28 +1,35 @@
+const pontuacao = document.querySelector(".pontuacao");
+function exibirPontuacao(tam) {
+    pontuacao.innerHTML = `Pontuação: ${tam*5}`;
+}
+
 const btnW = document.querySelector(".btnW");
 btnW.addEventListener("click", movCima);
+//btnW.addEventListener("mouseover", movCima);
 
 const btnS = document.querySelector(".btnS");
 btnS.addEventListener("click", movBaixo);
+//btnS.addEventListener("mouseover", movBaixo);
 
 const btnA = document.querySelector(".btnA");
 btnA.addEventListener("click", movEsquerda);
+//btnA.addEventListener("mouseover", movEsquerda);
 
 const btnD = document.querySelector(".btnD");
 btnD.addEventListener("click", movDireita);
+//btnD.addEventListener("mouseover", movDireita);
 
 document.addEventListener('keypress', function(event) {
     if (event.key === 'w') {
       // Ações a serem executadas quando o Enter for pressionado
         movCima();
-        console.log("cima");
     }
   });
 
 document.addEventListener('keypress', function(event) {
     if (event.key === 'a') {
       // Ações a serem executadas quando o Enter for pressionado
-         movEsquerda();
-        console.log("esquerda");
+        movEsquerda();
     }
   });
 
@@ -30,15 +37,13 @@ document.addEventListener('keypress', function(event) {
     if (event.key === 'd') {
       // Ações a serem executadas quando o Enter for pressionado
         movDireita();
-        console.log("direita");
     }
   });
 
 document.addEventListener('keypress', function(event) {
     if (event.key === 's') {
       // Ações a serem executadas quando o Enter for pressionado
-      movBaixo();  
-      console.log("baixo");
+      movBaixo();
     }
   });
 
@@ -70,21 +75,41 @@ function criarTabuleiro() {
 function posicionarCobra() {
     //posicionando cobra
     for (let index = 0; index < tamCobra; index++) {
-        celulaTd[cobra[index][1]*tamY + cobra[index][0]].setAttribute("class", "vida");
+        if( cobra[index][0] < tamY 
+            && cobra[index][0] > -1
+            && cobra[index][1] < tamX
+            && cobra[index][1] > -1) {
+            celulaTd[cobra[index][1]*tamY + cobra[index][0]].setAttribute("class", "vida");
+        }
     }
 }
+function removerCobra() {
+    for (let index = 0; index < tamCobra; index++) {
+        if(cobra[index][0] < tamY 
+            && cobra[index][0] > -1
+            && cobra[index][1] < tamX
+            && cobra[index][1] > -1) {
+            celulaTd[cobra[index][1]*tamY + cobra[index][0]].classList.remove("vida")
+        }
+        //celulaTd[cobra[index][1]*tamY + cobra[index][0]].setAttribute("class", "vida");
+    }
+}
+
 function posicionarComida() {
     //posicionando cobra
     for (let index = 0; index < tamCobra; index++) {
         //celulaTd[x*tamY + y].setAttribute("class", "vida");
+        
         celulaTd[comida[1]*tamY + comida[0]].setAttribute("class", "blue");
     }
 }
 
-
-
 function movCima() {
-    if(ultimaTecla === 'a' || ultimaTecla === 'd') {
+    if(run == false) {
+        removerCobra();
+        iniciarVariaveis();
+    }
+    else if(ultimaTecla === 'a' || ultimaTecla === 'd') {
         ultimaTecla = 'w';
         proxFrame() 
         console.log(ultimaTecla);
@@ -94,7 +119,7 @@ function movCima() {
 function movBaixo() {
     if(ultimaTecla == 'a' || ultimaTecla == 'd') {
         ultimaTecla = 's';
-        proxFrame() 
+        proxFrame();
         console.log(ultimaTecla);
     }
 }
